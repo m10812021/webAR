@@ -1,0 +1,390 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <link rel="stylesheet" href="{% static 'test/style.css' %}">
+    <meta charset="UTF-8">
+    {#    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.js"></script>#}
+    <meta aframe-injected="" name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no,user-scalable=no,minimal-ui">
+    <meta aframe-injected="" name="mobile-web-app-capable" content="yes">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/3.3.0/aframe/build/aframe-ar-nft.js"></script>
+    <script src = "https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"> </script>
+       <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
+
+    <script language="javascript" type="text/javascript">
+        function changeDisplay(){
+            var dropdown1=document.getElementById("dropdown1");
+            var dropdown2=document.getElementById("dropdown2");
+            if(dropdown1.style.display==='block'){dropdown1.style.display='none';}
+            else if(dropdown1.style.display==='none'){dropdown1.style.display='block';}
+
+            if(dropdown2.style.display==='block'){dropdown2.style.display='none';}
+            else if(dropdown2.style.display==='none'){dropdown2.style.display='block';}
+        }
+        function cs_change_music(music)
+        {
+            document.getElementById("myaudio").setAttribute('src', music);
+            document.getElementById("myaudio").load();
+        }
+        function autoPlay() {
+            var myAuto = document.getElementById('myaudio');
+            {#var fish =document.getElementById('entity_id');#}
+            {#fish.setAttribute("visible", "true");#}
+            myAuto.play();
+        }
+        function closePlay() {
+            var myAuto = document.getElementById('myaudio');
+
+            myAuto.pause();
+            myAuto.load();
+        }
+        function getmarkerchange(marker) {
+
+            var button2 = document.getElementById('btnplay');
+            var bear = document.getElementById('beartarget');
+            if (marker === 'turtle') {
+
+                button2.style.display = 'block';
+                bear.style.visibility= 'visible';
+            } else {
+
+                button2.style.display = 'block';
+            }
+        }
+
+    </script>
+
+
+    <script>
+        AFRAME.registerComponent('markerhandler', {
+            init: function () {
+                var marker=this.el;
+                marker.addEventListener('markerFound', () => {
+                    // redirect to custom URL
+                    var getmarker=marker.getAttribute('name');
+                    getmarkerchange(getmarker)
+                });
+            }});
+    </script>
+
+    <style>
+        {#model-viewer#trashmodelView{#}
+        {#    width: 55%;#}
+        {#    height: 45%;#}
+        {#}#}
+
+
+        .arjs-loader {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .arjs-loader div {
+            text-align: center;
+            font-size: 1.25em;
+            color: white;
+        }
+        .languagedropdown{
+            background-color: #00A8E3; /* blue */
+            border: none;
+            color: white;
+            padding: 12px;
+            text-align: right;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
+            margin: 4px 2px;
+            cursor: pointer;
+            font-family:"Microsoft JhengHei","微軟正黑體",sans-serif !important;
+        }
+        .language {border-radius: 50px;text-align:right;font-family: arial,"Microsoft JhengHei","微軟正黑體",sans-serif !important;}
+
+        .fish {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: -1;
+            visibility: visible;
+
+
+        }
+        .buttons5 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            visibility: hidden;
+
+
+        }
+        .buttons4 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30em;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            z-index: 10;
+            visibility: hidden;
+
+
+        }
+        .buttons3 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 10em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+        .buttons2 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 20em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+
+        }
+        .say-hi-button {
+            padding: 0.25em;
+            border-radius: 50%;
+            border: none;
+            background: #00A8E3;
+            color: white;
+            width: 3em;
+            height: 3em;
+            font-size: 30px;
+            text-align: center;
+            display: none;
+        }
+
+        .bg {
+            /* The image used */
+
+            /* Full height */
+            height: 100%;
+
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            z-index: 9999;
+            display: block;
+            justify-content: center;
+            align-items: center;
+        }
+
+    </style>
+</head>
+
+
+
+
+<body>
+
+
+    <!-- minimal loader shown until image descriptors are loaded -->
+    <div class="arjs-loader">
+        <div>Loading, please wait...</div>
+    </div>
+
+    <div class="bg">
+
+
+        <div style="text-align:right">
+            <nav class="menu">
+                <input type="checkbox" href="#" class="menu-open" name="menu-open" id="menu-open"/>
+                <label class="menu-open-button" for="menu-open">
+                    <span class="hamburger hamburger-1"></span>
+                    <span class="hamburger hamburger-2"></span>
+                    <span class="hamburger hamburger-3"></span>
+                </label>
+
+                <a href="{% url "audio" %}" class="menu-item"><img src="{% static 'button/UI/audioView.png' %}"align="center" valign="center"  width="35" height="41"/> </a>
+                <a href="{% url "photo" %}" class="menu-item"><img src="{% static 'button/UI/photo_back.png' %}" align="center" valign="center" width="35" height="41"/> </a>
+                <a href="#" class="menu-item"> <img src="{% static 'button/UI/fish_back.png' %}" align="center" valign="center" width="35" height="41"/> </a>
+                <a href="{% url "floor1" %}" class="menu-item"> <img src="{% static 'button/UI/collection.png' %}" align="center" valign="center" width="35" height="41"/> </a>
+
+
+            </nav>
+        </div>
+
+<div class="dropdown" align="right">
+    <button class="languagedropdown language" id="dropdownMenuButton" onclick="changeDisplay()" style="display: block;">
+        <div style="font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;語音選擇&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+    </button>
+    <div>
+     <button class="languagedropdown language"  onclick="changeDisplay()" style="display: none;">
+        <div style="font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中文&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+    </button>
+     <button class="languagedropdown language" id="dropdown1" style="display: none;">
+        <div style="font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中文&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+    </button>
+      <button class="languagedropdown language" id="dropdown2" style="display: none;">
+        <div style="font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;English&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+    </button>
+    </div>
+
+</div>
+
+{#        <div class="dropdown" align="right">#}
+{#            <input class="btn btn-secondary dropdown-toggle" type="button" style="background-image:url({% static 'buttonimage/audioView/languagechoose.png' %});width:320px;height:75px;" id="dropdownMenuButton">#}
+{#            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                Choose language#}
+{#            </button>#}
+{#            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">#}
+{#                <a class="dropdown-item" onclick="cs_change_music('{% static 'mp3/english/01.mp3' %}')" href="#">English</a>#}
+{#                <a class="dropdown-item" onclick="cs_change_music('{% static 'mp3/01AudioGuide.mp3' %}')" href="#">中文</a>#}
+{#                <a class="dropdown-item" href="#" onclick="playlist.prevTrack();">Prev Track</a>#}
+{#                <a class="dropdown-item" href="#" onclick="playlist.nextTrack();">Next Track</a>#}
+{#                <a class="dropdown-item" href="#" onclick="playlist.toggleShuffle();">Toggle Shuffle</a>#}
+{#            </div>#}
+{#        </div>#}
+
+        <div class="fish" id="fishmodel">
+            <model-viewer style="width: 100%;height: 100%;" src="https://raw.githubusercontent.com/m10812021/webAR/master/gltf/fish/scene.gltf" autoplay animation-name="Take 01" >
+            </model-viewer>
+        </div>
+        <div class="buttons5" id="trashmodel">
+            <model-viewer  id="trashmodelView" src="https://raw.githubusercontent.com/m10812021/webAR/master/gltf/ok3.glb" autoplay animation-name="Anim_0" >
+            </model-viewer>
+        </div>
+        <div class="buttons4" id="beartarget">
+            <model-viewer style="width: 55%;height: 45%;" src="https://raw.githubusercontent.com/m10812021/webAR/master/gltf/bear6.glb" autoplay animation-name="Anim_0" >
+            </model-viewer>
+        </div>
+        <div class="buttons3">
+            {#      <input type="button" id="button1" onclick="autoPlay()" value="播放"  />#}
+            {#    <input type="button" id="button2" onclick="closePlay()" value="關閉" />#}
+
+            <button class="say-hi-button" id="btnplay" onclick="playlist.nextTrack()"><a>&nbsp</a><i class="fa fa-play"></i></button>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="say-hi-button" id="btnstop" onclick="location.href='{% url 'floor1' %}?1=1&2=1&3=1&4=1&5=1'"><i class="fa fa-home"></i></button>
+
+        </div>
+    </div>
+
+
+    <a-scene
+            vr-mode-ui="enabled: false;"
+            renderer="logarithmicDepthBuffer: true;"
+            embedded
+            arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: false; sourceWidth:1920; sourceHeight:1080; displayWidth: 1920; displayHeight: 1080;"
+    >
+        <!-- type of model where you place -->
+
+        <!-- we use cors proxy to avoid cross-origin problems -->
+        <a-nft
+                id="nftmodel"
+                markerhandler
+                name="turtle"
+                type="nft"
+                url="https://arjs-cors-proxy.herokuapp.com/https://github.com/m10812021/webAR/raw/master/picture/america"
+                smooth="true"
+                smoothCount="10"
+                smoothTolerance=".01"
+                smoothThreshold="5">
+
+            <a-entity
+                    id="entity_id"
+                    gltf-model="https://arjs-cors-proxy.herokuapp.com/https://raw.githubusercontent.com/m10812021/webAR/master/20201110/0water3/animation/fish.gltf"
+                    scale="50 50 50"
+                    position="250 50 -250"
+                    animation-mixer="clip:Take 01"
+                    visible="false"
+            >
+            </a-entity>
+        </a-nft>
+
+        <a-entity camera></a-entity>
+
+
+
+    </a-scene>
+
+
+  <noscript>
+    Javascript is required to run this app!
+  </noscript>
+    <audio src="" controls id="audioPlayer" >
+        Sorry, your browser doesn't support html5!
+    </audio>
+    <ul id="playlist" hidden>
+        <li><a href="{% static 'onlyaudio/0water1and2/audio/1Pic1.m4a' %}">1Pic1</a></li>
+        <li><a href="{% static 'onlyaudio/0water1and2/audio/1Pic1.m4a' %}">1Pic1</a></li>
+        <li><a href="{% static 'onlyaudio/0water3/audio/1Pic2.m4a' %}">1Pic2</a></li>
+        <li><a href="{% static 'onlyaudio/1turtle2/audio/2Pic1.m4a' %}">2Pic1</a></li>
+        <li><a href="{% static 'onlyaudio/1turtle2/audio/2Pic1_02.m4a' %}">2Pic1_02</a></li>
+        <li><a href="{% static 'onlyaudio/1turtle2/audio/2Pic1_03.m4a' %}">2Pic1_03</a></li>
+    </ul>
+
+    <script src="{% static 'audioPlayer.js' %}"></script>
+    <script>
+
+        /*
+    Default constructor configuration:
+        autoplay: false,
+        shuffle: false,
+        loop: false,
+        playerId: "audioPlayer",
+        playlistId: "playlist",
+        currentClass: "current-song"
+
+
+*/
+
+        // loads the audio player
+        var config = {
+          autoplay: true,
+            loop: true,
+            shuffle: true
+        };
+        var playlist = new AudioPlaylist();
+
+    </script>
+</body>
+</html>
